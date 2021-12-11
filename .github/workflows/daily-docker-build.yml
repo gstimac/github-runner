@@ -1,0 +1,29 @@
+name: Daily-Docker-Build
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs: 
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      IMAGE_TAG: $(date +%s)
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Github Runner docker image
+        run: |
+          echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+          docker build . --file Dockerfile --tag beefy-gha-runner:${{ env.IMAGE_TAG }}
+
+      - name: Check image size 
+        run: docker images
+
+      - name: Scan image for high severity vulnerabilities
+        continue-on-error: true
+        uses: Azure/container-scan@v0
+        with:
+          image-name: beefy-gha-runner:${{ env.IMAGE_TAG }}
+          run-quality-checks: false
