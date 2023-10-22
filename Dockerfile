@@ -24,4 +24,4 @@ RUN sudo -E bash basic.sh \
   && sudo -E bash sbt.sh \
   && sudo -E bash azcopy.sh \
   && sudo -E bash terraform.sh \ 
-  && sudo rm -rf /tmp/* && sudo apt autoremove && sudo apt clean && sudo rm -rf /var/lib/apt/lists/*
+#  && sudo rm -rf /tmp/* && sudo apt autoremove && sudo apt clean && sudo rm -rf /var/lib/apt/lists/*
